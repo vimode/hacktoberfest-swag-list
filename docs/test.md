@@ -1,30 +1,107 @@
-# Test n
+# Test Markdown File with Formatting Errors!
 
-## Introduction
+This is a test file specifically created to test the Reviewdog Markdownlint GitHub action. It contains intentional markdown formatting errors.
 
-This is a sample document to test **Markdownlint** integration with Reviewdog.
+###Missing H2 Level (MD001 error)
 
-- List item one
-- List item two with more text than usual to test length and other things that are really long for MD013.
-- List item three
+This should trigger MD001 as we skipped from H1 to H3.
 
-## Expected Issues
+##Missing space after hash (MD018 error)
+This heading has no space after the hash symbols.
 
-### Duplicate Headings
+# Multiple headings with the same content
 
-### Duplicate Headings
+Some content here.
 
-To check if the rule MD024 catches this.
+# Multiple headings with the same content
 
-## Links
+More content here - this should NOT trigger MD024 since it's disabled.
 
-For more information, click [here](https://github.com). MD059
+## Heading with trailing punctuation!
 
-## Trailing Punctuation in Headings!
+This heading ends with exclamation mark - should NOT trigger MD026 since it's disabled.
 
-MD026
+## List Problems
 
-### Conclusion:
+Here's a list with inconsistent indentation (should NOT trigger MD005/MD007 since disabled):
 
-This is the conclusion.
-Last line
+- Item 1
+  - Sub-item with 3 spaces
+    - Sub-sub-item with 5 spaces
+  - Another sub-item with 2 spaces
+- Item 2 \* Deep indented item
+
+-Mixed list types
+
+- In same list
+
+* Different bullets
+
+## Link Issues
+
+Here are some bare URLs that should trigger errors:
+https://example.com
+www.google.com
+
+[Click here](https://example.com) - this should NOT trigger MD059 since it's disabled.
+
+## Line Length Test
+
+This is an extremely long line that exceeds typical line length limits and should normally trigger MD013 but won't because MD013 is disabled in the markdownlint configuration file for this project.
+
+## Whitespace Issues
+
+There are trailing spaces at the end of this line
+And this line has trailing spaces too
+
+    This line starts with a tab character (should trigger MD010)
+
+## Empty Elements
+
+[](empty-link-text)
+
+## Emphasis Problems
+
+**This is bold text that spans
+across multiple lines**
+
+_This italic text also spans
+multiple lines_
+
+## Code Block Issues
+
+```
+No language specified for code block
+This should trigger MD040
+```
+
+## HTML in Markdown
+
+<br>
+Some inline HTML that may trigger warnings.
+
+<div>
+Block level HTML
+</div>
+
+## Raw HTML
+
+<script>alert('This should definitely trigger MD033')</script>
+
+## Inconsistent ATX Heading Styles
+
+# ATX Style 1
+
+## ATX Style 2
+
+### ATX Style 3
+
+## Reference Links
+
+This has a [reference link][1] but no definition.
+
+[unreferenced]: https://example.com "This reference is never used"
+
+## Final Section
+
+This markdown file intentionally contains various formatting errors to test the linting process.
